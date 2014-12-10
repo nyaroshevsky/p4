@@ -12,10 +12,11 @@ class IndexController extends BaseController {
 	*/
 	public function getIndex() {
 
-		$channelsHtml = "<span class=\"auto-style1\"><strong>Favorites:</strong></span><br />";
+		$channelsHtml = "";
 		$allChannelsHtml = '<span class="auto-style1"><strong>All Channels:</strong></span><br /><br />';
 		if (Auth::check())
 		{
+			$channelsHtml = "<span class=\"auto-style1\"><strong>Favorites:</strong></span><br />";
 			$id = Auth::user()->id;
 			$currentuser = User::find($id);
 			if ($currentuser->channels->isEmpty())
