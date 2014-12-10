@@ -34,7 +34,7 @@ return array(
 	| stay compatible with the Mailgun e-mail application by default.
 	|
 	*/
-	'port' => 587,
+	'port' => 465,
 	/*
 	|--------------------------------------------------------------------------
 	| Global "From" Address
@@ -56,7 +56,7 @@ return array(
 	| transport layer security protocol should provide great security.
 	|
 	*/
-	'encryption' => 'tls',
+	'encryption' => 'ssl',
 	/*
 	|--------------------------------------------------------------------------
 	| SMTP Server Username
