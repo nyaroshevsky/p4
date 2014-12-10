@@ -52,4 +52,44 @@ class IndexController extends BaseController {
 		return View::make('index');
 	}
 
+	public function playChannel() {
+		if(Request::ajax()) {
+
+			$html_for_users_channels = "";
+
+	        $query  = Input::get('query');
+	        
+     		if (0 === strpos($query, 'play')) {
+			   $new_channel_id = str_replace("play", "", $query);
+
+			   $new_channel = Channel::find($new_channel_id);
+
+			   if ($new_channel->name == "Sports")
+			   {
+			   		$html_for_users_channels = Channel::getDefaultUserChannelsListSports();
+			   }
+			   elseif ($new_channel->name == "Comedy")
+			   {
+			   		$html_for_users_channels = Channel::getDefaultUserChannelsListComedy();
+			   }
+			   else
+			   {
+			   		$html_for_users_channels = Channel::getDefaultUserChannelsList();
+			   }
+			  
+	           $newChannelName = $new_channel->name . " Channel";
+
+	           $returnArray = array($html_for_users_channels, $newChannelName);
+	        	return $returnArray;
+			}
+	        else
+	        {
+	        	
+	        	$html_for_users_channels =  Channel::getDefaultUserChannelsList();
+	        	$returnArray = array($html_for_users_channels, "CNN Channel");
+	        	return $returnArray;
+	        }	
+    	}
+	}
+
 }

@@ -45,7 +45,7 @@ Route::get('/createChannel', 'ChannelController@createInitialChannel' );
 
 Route::post('/createChannel', 'ChannelController@createInitialChannel' );
 
-Route::post('/play', 'ChannelController@playChannel' );
+Route::post('/play', 'IndexController@playChannel' );
 
 Route::post('/test', function() {
 

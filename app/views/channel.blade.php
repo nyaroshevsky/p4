@@ -39,7 +39,7 @@
  <div id="body">
 
 
-            <h1>Search (with Ajax!)</h1>
+            <h1>Add Your Favorite Channels (with Ajax!)</h1>
 
             
             {{ Form::token() }}
