@@ -17,13 +17,9 @@ class CreateChannelToLinkTable extends Migration {
 			# AI, PK
 			# none needed
 			# General data...
+			$table->increments('id');
 			$table->integer('channel_id')->unsigned();
 			$table->integer('link_id')->unsigned();
-			
-			# Define foreign keys...
-			$table->foreign('channel_id')->references('id')->on('channels');
-			$table->foreign('link_id')->references('id')->on('links');
-			
 		});
 	}
 	/**

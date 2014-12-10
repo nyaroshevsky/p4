@@ -45,6 +45,8 @@ Route::get('/createChannel', 'ChannelController@createInitialChannel' );
 
 Route::post('/createChannel', 'ChannelController@createInitialChannel' );
 
+Route::post('/play', 'ChannelController@playChannel' );
+
 Route::post('/test', function() {
 
 	$query  = Input::get('query');

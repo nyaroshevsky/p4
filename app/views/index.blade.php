@@ -18,9 +18,39 @@
     </style>
 @stop
 
+@section('/body')
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    
+    <script type="text/javascript">
+        
+        function playFunction(elmnt,id_of_element) {
+            
+            $.ajax({
+                    type: 'POST',
+                    url: '/play',
+                    success: function (response) {
+                        $('#playlist').html(response[0]);
+                        $('#channelTitle').html(response[1]);
+                        init();
+                    },
+                    data: {
+                        format: 'html',
+                        query: id_of_element,
+                        _token: $('input[name=_token]').val(),
+                    },
+                });
+        }
+
+
+    </script>
+
+@stop
+
 @section('content')
 
 	<div id="body">
+
+        {{ Form::token() }}
 
             <table cellpadding="10">
                 <tr>
@@ -28,23 +58,16 @@
                         <br />
                         <br />
                         <br />
-                        <span class="auto-style1"><strong>Your Channels:</strong></span> <br /><br />
-                        CNN<br /><br />
-                        <span class="auto-style1"><strong>All Channels:</strong></span> <br /><br />
-                        CNN<br /><br />
-                        MSNBC<br /><br />
-                        Comedy<br /><br />
-                        Sports<br /><br />
-                        Movies<br /><br />
-                        Youtube<br /><br />
-                        Dailymotion<br /><br />
-                        World News<br /><br />
-                        NYTimes<br /><br />
+                        
+                        {{ $yourChannels}}
+
+                        {{ $allChannels}}
+
                     </td>
                     <td valign="top">
 
                         <div>
-                            <h3>CNN Channel</h3>
+                            <h3 id="channelTitle" >CNN Channel</h3>
 
                             <script language="JavaScript">
                                 flowplayer("player", "http://releases.flowplayer.org/swf/flowplayer-3.2.18.swf");
@@ -76,6 +99,7 @@
                                 <li><a href="http://ht.cdn.turner.com/cnn/big/bestoftv/2014/04/15/ab-anthony-bourdain-parts-unknown-vegas-3.cnn_15160303_1280x720_3500k.mp4">Antony Burdain Great Meal Mexico</a></li>
                             </ul>
 
+                            
 
                             <!--This javascript runs the videos in playlist-->
                             <script type="text/javascript">

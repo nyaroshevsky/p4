@@ -10,17 +10,13 @@ class CreateUserToChannelTable extends Migration {
 	# Create pivot table connecting `user` and `channel`
 	public function up() 
 	{
-		Schema::create('user_chanel', function($table) {
+		Schema::create('user_channel', function($table) {
 			# AI, PK
 			# none needed
 			# General data...
+			$table->increments('id');
 			$table->integer('user_id')->unsigned();
 			$table->integer('channel_id')->unsigned();
-			
-			# Define foreign keys...
-			$table->foreign('user_id')->references('id')->on('users');
-			$table->foreign('channel_id')->references('id')->on('channels');
-			
 		});
 	}
 	/**
@@ -30,6 +26,6 @@ class CreateUserToChannelTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('user_chanel');
+		Schema::drop('user_channel');
 	}
 }

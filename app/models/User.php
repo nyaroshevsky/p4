@@ -12,7 +12,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
 	public function channels()
     {
-        return $this->belongsToMany('Channel');
+        return $this->belongsToMany('Channel', 'user_channel', 'user_id', 'channel_id');
     }
 	
 	public function sendWelcomeEmail() {
@@ -24,5 +24,14 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 			$subject  = 'Welcome '.$this->first_name.'!';
     		$message->to($recipient_email, $recipient_name)->subject($subject);
 		});
+	}
+
+	# Model events...
+	# http://laravel.com/docs/eloquent#model-events
+	public static function boot() {
+        parent::boot();
+        static::deleting(function($user) {
+            DB::statement('DELETE FROM user_channel WHERE user_id = ?', array($user->id));
+        });
 	}
 }

@@ -12,8 +12,28 @@ class IndexController extends BaseController {
 	*/
 	public function getIndex() {
 
-		return View::make('index');
+		$channelsHtml = "<span class=\"auto-style1\"><strong>Favorites:</strong></span><br />";
+		$allChannelsHtml = '<span class="auto-style1"><strong>All Channels:</strong></span><br /><br />';
+		if (Auth::check())
+		{
+			$id = Auth::user()->id;
+			$currentuser = User::find($id);
+			if ($currentuser->channels->isEmpty())
+		    {
+		       $channelsHtml = $channelsHtml . '<small>You don\'t have any channels, <a href="/channel">click here to add</a></small>';
+		    }
+		    else
+		    {
+		    	$channelsHtml = $channelsHtml . '<small><a href="/channel">click here to edit</a></small>';	
+		    }
 
+		    $channelsHtml =  $channelsHtml .  '<br /><br />' . Channel::getUserChannelsHtmlWithPlayButton();
+		}
+
+
+		$allChannelsHtml =  $allChannelsHtml  . Channel::getAllChannelsHtmlWithPlayButton();	
+
+		return View::make('index')->with('yourChannels', $channelsHtml)->with('allChannels', $allChannelsHtml);
 	}
 
 	/**

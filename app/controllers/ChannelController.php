@@ -11,58 +11,109 @@ class ChannelController extends \BaseController {
 
 	public function getChannel() {
 		
-		$html_for_all_channels = "";
-		$html_for_users_channels = "";
-
-		$add_id_list_for_ajax = "";
-		$add_id_list_for_ajax = '\'' . $add_id_list_for_ajax;
-
-		$erase_id_list_for_ajax = "";
-		$erase_id_list_for_ajax = '\'' . $erase_id_list_for_ajax;
-
-		//get all channels
-		$channels = Channel::all();
-
-		$count = 0;
-		foreach ($channels as $channel)
-		{
-			$count = $count + 1;
-		    $html_for_all_channels = $html_for_all_channels .  $channel->name . ' <input id=\'' . 'add' . $channel->id . '\' type="image" src="plus_add_blue.png" width="10" alt="Submit"><br /><br />';
-
-		    if ($count > 1)
-		    	$add_id_list_for_ajax = $add_id_list_for_ajax . ', ';	
-		    $add_id_list_for_ajax = $add_id_list_for_ajax . '#' . 'add' . $channel->id;
-
-		}
-
-		$add_id_list_for_ajax = $add_id_list_for_ajax . '\'';
-
-		//get all channels for user
-
-		$id = Auth::user()->id;
-		$currentuser = User::find($id);
-
-		$user_channels = $currentuser->channels();
-		$count = 0;
-		foreach ($user_channels as $channel)
-		{
-		    $html_for_users_channels = $html_for_users_channels .  $channel->name . ' <input id=\'' . 'remove' . $channel->id .  '\' type="image" src="erase.png" width="10" alt="Submit"><br /><br />';
-
-		    if ($count > 1)
-		    	$erase_id_list_for_ajax = $erase_id_list_for_ajax . ', ';	
-		    $erase_id_list_for_ajax = $erase_id_list_for_ajax . '#' . 'remove' . $channel->id ;
-		}
-
-		$erase_id_list_for_ajax = $erase_id_list_for_ajax . '\'';
-
+		$html_for_all_channels = Channel::getAllChannelsHtml();
+		$html_for_users_channels = Channel::getUserChannelsHtml();
 
 		return View::make('channel')->with('all_channels', 
-						$html_for_all_channels)->with('add_id_list', 
-						$add_id_list_for_ajax)->with('already_has_user_channels', 
-						$html_for_users_channels)->with('erase_id_list', 
-						$erase_id_list_for_ajax);
+						$html_for_all_channels)->with('already_has_user_channels', 
+						$html_for_users_channels);
 
+	}
 
+	
+
+	public function postChannel() {
+		if(Request::ajax()) {
+
+	        $query  = Input::get('query');
+
+		    $html_for_users_channels = "";
+    
+		    
+     		if (0 === strpos($query, 'add')) {
+			   $new_channel_id = str_replace("add", "", $query);
+
+	           #get all users channels
+	           $id = Auth::user()->id;
+
+			   $currentuser = User::find($id);
+
+			   $new_channel = Channel::find($new_channel_id);
+
+			   if ( !$currentuser->channels->contains($new_channel) )
+			   {
+			       $currentuser->channels()->attach($new_channel->id);
+			   }
+
+			   $html_for_users_channels = Channel::getUserChannelsHtml();
+
+	           return $html_for_users_channels;
+			}
+			elseif (0 === strpos($query, 'erase')) {
+				$new_channel_id = str_replace("erase", "", $query);
+	            
+	            #get all users channels
+	            
+	            $id = Auth::user()->id;
+ 
+			    $currentuser = User::find($id);
+ 
+			    $new_channel = Channel::find($new_channel_id);
+ 
+			    if ($currentuser->channels->contains($new_channel))
+			    {
+			        $currentuser->channels()->detach($new_channel->id);
+			    }
+ 
+			    $html_for_users_channels = Channel::getUserChannelsHtml();
+ 
+	            return $html_for_users_channels;
+			}
+	        else
+	        {
+	        	return Channel::getUserChannelsHtml();
+	        }	
+    	}
+	}
+
+	public function playChannel() {
+		if(Request::ajax()) {
+
+			$html_for_users_channels = "";
+
+	        $query  = Input::get('query');
+	        
+     		if (0 === strpos($query, 'play')) {
+			   $new_channel_id = str_replace("play", "", $query);
+
+			   $new_channel = Channel::find($new_channel_id);
+
+			   if ($new_channel->name == "Sports")
+			   {
+			   		$html_for_users_channels = Channel::getDefaultUserChannelsListSports();
+			   }
+			   elseif ($new_channel->name == "Comedy")
+			   {
+			   		$html_for_users_channels = Channel::getDefaultUserChannelsListComedy();
+			   }
+			   else
+			   {
+			   		$html_for_users_channels = Channel::getDefaultUserChannelsList();
+			   }
+			  
+	           $newChannelName = $new_channel->name . " Channel";
+
+	           $returnArray = array($html_for_users_channels, $newChannelName);
+	        	return $returnArray;
+			}
+	        else
+	        {
+	        	
+	        	$html_for_users_channels =  Channel::getDefaultUserChannelsList();
+	        	$returnArray = array($html_for_users_channels, "CNN Channel");
+	        	return $returnArray;
+	        }	
+    	}
 	}
 
 	public function createInitialChannel() {
@@ -110,31 +161,5 @@ class ChannelController extends \BaseController {
 
 	}
 
-	public function postChannel() {
-		if(Request::ajax()) {
 
-	        $query  = Input::get('query');
-
-	        # We're demoing two possible return formats: JSON or HTML
-	        $format = Input::get('format');
-
-	        # Do the actual query
-	        $books  = Book::search($query);
-
-	        # Otherwise, loop through the results building the HTML View we'll return
-	        if($format == 'html') {
-
-	            $results = '';          
-	            foreach($books as $book) {
-	                # Created a "stub" of a view called book_search_result.php; all it is is a stub of code to display a book
-	                # For each book, we'll add a new stub to the results
-
-	                $results .= View::make('book_search_result')->with('book', $book)->render();   
-	            }
-
-	            # Return the HTML/View to JavaScript...
-	            return $results;
-	        }
-    	}
-	}
 }
