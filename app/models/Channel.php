@@ -104,9 +104,7 @@ class Channel extends Eloquent {
    		$html_for_users_channels = "";
 
 	   	$html_for_users_channels = $html_for_users_channels . '<li class="active"><a href="http://www.dailymotion.com/cdn/H264-1920x1080/video/x1p1vmr.mp4?auth=1418402127-2562-e9k6rnpj-c50ce89a5d5c3aaf66fb08623ae414e4">The Worst Tackles</a></li>';
-		$html_for_users_channels = $html_for_users_channels . '<li><a href="http://www.dailymotion.com/cdn/H264-1280x720/video/x23gkny.mp4?auth=1418402128-2562-cgl30rae-7e6876d8b8ca7a488c9e70ff3261e0ac">Soccer</a></li>';
-	    $html_for_users_channels = $html_for_users_channels . '<li><a href="http://ht.cdn.turner.com/cnn/big/international/2014/05/06/anthony-bourdain-show-extension-russia-orig-ms.cnn_06173205_1280x720_3500k.mp4">Antony Burdain Russia</a></li>';
-		$html_for_users_channels = $html_for_users_channels . '<li><a href="http://ht.cdn.turner.com/cnn/big/bestoftv/2014/04/15/ab-anthony-bourdain-parts-unknown-vegas-3.cnn_15160303_1280x720_3500k.mp4">Antony Burdain Great Meal Mexico</a></li>';
+		$html_for_users_channels = $html_for_users_channels . '<li><a href="http://www.dailymotion.com/cdn/H264-1280x720/video/x23gkny.mp4?auth=1418402128-2562-cgl30rae-7e6876d8b8ca7a488c9e70ff3261e0ac">Another Football</a></li>';
 			
 		return $html_for_users_channels;
    	}
@@ -116,7 +114,7 @@ class Channel extends Eloquent {
    		$html_for_users_channels = "";
 
 	   	$html_for_users_channels = $html_for_users_channels . '<li class="active"><a href="http://www.dailymotion.com/cdn/H264-512x384/video/x2fdzh.mp4?auth=1418402126-2562-9ajpcp9b-f0e9b380e4bafa3f94212494fbcd3146">Conan O\'Brien</a></li>';
-		$html_for_users_channels = $html_for_users_channels . '<li><a href="http://www.dailymotion.com/cdn/H264-1920x1080/video/x1p1vmr.mp4?auth=1418402127-2562-e9k6rnpj-c50ce89a5d5c3aaf66fb08623ae414e4">Jon Stewart</a></li>';
+		$html_for_users_channels = $html_for_users_channels . '<li><a href="http://proxy-65.dailymotion.com/video/645/603/3306546_mp4_h264_aac.mp4?auth=1418237979-4098-2v767cvd-23a10f69c9d9eea7c7e78d3ef745082c#cell=core">Kelly Clarkson</a></li>';
 
 			
 		return $html_for_users_channels;
